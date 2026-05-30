@@ -14,7 +14,6 @@ Practica_probabilidad/
 │   ├── Data.frames/
 │   └── Graficas/
 └── main.R
-
 ```
 
 ---
