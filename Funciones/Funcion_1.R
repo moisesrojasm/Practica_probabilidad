@@ -43,22 +43,80 @@ resolver_ejercicios_1_al_12 <- function() {
   )
   
   # Ejercicio 3
-  # Tu código aquí
+  caja_esferas <- c(rep("Negra", 4), rep("Blanca", 3), rep("Roja", 2))
+  
+  S_ej3 <- expand.grid(Extrac_1 = caja_esferas, Extrac_2 = caja_esferas, Extrac_3 = caja_esferas)
+  
+  cardinalidad_ej3 <- nrow(S_ej3)
+  
+  respuestas$ejercicio_3 <- list(
+    Espacio_Muestral = S_ej3,
+    Total_Puntos_Muestrales = cardinalidad_ej3
+  )
   
   # Ejercicio 4
-  # Tu código aquí
+  palos <- c("Corazones", "Diamantes", "Treboles", "Picas")
+  valores <- c("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
+  
+  S_ej4 <- expand.grid(Valor = valores, Palo = palos)
+  
+  cardinalidad_ej4 <- nrow(S_ej4) 
+  
+  evento_D <- subset(S_ej4, Valor %in% c("J", "Q", "K"))
+  casos_favorables_ej4 <- nrow(evento_D)
+  
+  prob_ej4 <- casos_favorables_ej4 / cardinalidad_ej4
+  
+  respuestas$ejercicio_4 <- list(
+    Espacio_Muestral = S_ej4,
+    Casos_Favorables = casos_favorables_ej4,
+    Probabilidad = prob_ej4
+  )
   
   # Ejercicio 5
-  # Tu código aquí
+  # Número de corredores
+  n <- 8
+  
+  # Número de medallas
+  r <- 3
+  
+  # Permutaciones sin repetición
+  respuestas$ejercicio5 <- factorial(n) / factorial(n - r)
   
   # Ejercicio 6
-  # Tu código aquí
+  # Número de candidatos
+  n <- 12
+  
+  # Número de analistas requeridos
+  r <- 5
+  
+  # Combinaciones
+  respuestas$ejercicio6 <- factorial(n) / (factorial(r) * factorial(n - r))
   
   # Ejercicio 7
-  # Tu código aquí
+  # Canicas
+  azules <- 6
+  amarillas <- 4
+  verdes <- 5
+  
+  # Total de canicas
+  total <- azules + amarillas + verdes
+  
+  # Canicas que no son verdes
+  favorables <- azules + amarillas
+  
+  # Probabilidad
+  respuestas$ejercicio7 <- favorables / total
   
   # Ejercicio 8
-  # Tu código aquí
+  # Casos favorables: elegir 3 cruces de 4 lanzamientos
+  favorables <- choose(4, 3)
+  
+  # Casos posibles
+  posibles <- 2^4
+  
+  # Probabilidad
+  respuestas$ejercicio8 <- favorables / posibles
   
   # Ejercicio 9
   # Tu código aquí
