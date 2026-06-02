@@ -1,7 +1,4 @@
-# ==============================================================================
-# ANALISTA B: Probabilidad Empírica y Distribuciones Discretas
 # Ejercicios del 13 al 18
-# ==============================================================================
 
 resolver_ejercicios_1_al_18 <- function() {
   

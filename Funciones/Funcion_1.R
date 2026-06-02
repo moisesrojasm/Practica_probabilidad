@@ -1,7 +1,4 @@
-# ==============================================================================
-# ANALISTA A: Espacios Muestrales y Probabilidad Condicional
 # Ejercicios del 1 al 12
-# ==============================================================================
 
 resolver_ejercicios_1_al_12 <- function() {
   
@@ -9,7 +6,15 @@ resolver_ejercicios_1_al_12 <- function() {
   respuestas <- list()
   
   # --- Ejercicio 1: Moneda y dado ---
-  # TODO: Tu código aquí
+  opciones_moneda <- c("Cara", "Cruz")
+  opciones_dado <- 1:6
+  
+  S_ej1 <- expand.grid(Moneda = opciones_moneda, Dado = opciones_dado)
+  
+  cardinalidad <- nrow(S_ej1)
+  
+  
+  
   
   # --- Ejercicio 2: Suma de 3 dados ---
   # TODO: Tu código aquí
@@ -44,7 +49,5 @@ resolver_ejercicios_1_al_12 <- function() {
   # --- Ejercicio 12: Teorema de Bayes (Proveedor C) ---
   # TODO: Tu código aquí
   
-  
-  # Retornar todas las respuestas
   return(respuestas)
 }
