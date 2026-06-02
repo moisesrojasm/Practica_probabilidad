@@ -9,12 +9,20 @@ resolver_ejercicios_1_al_12 <- function() {
   opciones_moneda <- c("Cara", "Cruz")
   opciones_dado <- 1:6
   
-  S_ej1 <- expand.grid(Moneda = opciones_moneda, Dado = opciones_dado)
+  S_ej1 <- expand.grid(opciones_moneda, opciones_dado)
   
   cardinalidad <- nrow(S_ej1)
   
+  evento <- subset(S_ej1, opciones_moneda == "Cara", opciones_dado = c(2,4,6))
   
+  casos_favorables <- nrow(evento)
   
+  prob_ej1 <- casos_favorables / cardinalidad
+  
+  respuestas$ej1 <- list(
+    Espacio_Muestral = S_ej1,
+    Probabilidad = prob_ej1
+  )
   
   # --- Ejercicio 2: Suma de 3 dados ---
   # TODO: Tu código aquí
