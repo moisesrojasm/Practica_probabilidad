@@ -8,11 +8,11 @@ resolver_ejercicios_1_al_12 <- function() {
   opciones_moneda <- c("Cara", "Cruz")
   opciones_dado <- 1:6
   
-  S_ej1 <- expand.grid(opciones_moneda, opciones_dado)
+  S_ej1 <- expand.grid(Moneda = opciones_moneda, Dado = opciones_dado)
   
   cardinalidad_ej1 <- nrow(S_ej1)
   
-  evento_ej1 <- subset(S_ej1, opciones_moneda == "Cara", opciones_dado = c(2,4,6))
+  evento_ej1 <- subset(S_ej1, Moneda == "Cara" & Dado %in% c(2, 4, 6))
   
   casos_favorables_ej1 <- nrow(evento_ej1)
   
@@ -75,23 +75,23 @@ resolver_ejercicios_1_al_12 <- function() {
   
   # Ejercicio 5
   # Número de corredores
-  n <- 8
+  n_5 <- 8
   
   # Número de medallas
-  r <- 3
+  r_5 <- 3
   
   # Permutaciones sin repetición
-  respuestas$ejercicio5 <- factorial(n) / factorial(n - r)
+  respuestas$ejercicio5 <- factorial(n_5) / factorial(n_5 - r_5)
   
   # Ejercicio 6
   # Número de candidatos
-  n <- 12
+  n_6 <- 12
   
   # Número de analistas requeridos
-  r <- 5
+  r_6 <- 5
   
   # Combinaciones
-  respuestas$ejercicio6 <- factorial(n) / (factorial(r) * factorial(n - r))
+  respuestas$ejercicio6 <- choose(n_6, r_6)
   
   # Ejercicio 7
   # Canicas
@@ -100,23 +100,16 @@ resolver_ejercicios_1_al_12 <- function() {
   verdes <- 5
   
   # Total de canicas
-  total <- azules + amarillas + verdes
+  total_canicas <- azules + amarillas + verdes
   
   # Canicas que no son verdes
   favorables <- azules + amarillas
   
   # Probabilidad
-  respuestas$ejercicio7 <- favorables / total
+  respuestas$ejercicio7 <- favorables / total_canicas
   
   # Ejercicio 8
-  # Casos favorables: elegir 3 cruces de 4 lanzamientos
-  favorables <- choose(4, 3)
-  
-  # Casos posibles
-  posibles <- 2^4
-  
-  # Probabilidad
-  respuestas$ejercicio8 <- favorables / posibles
+  respuestas$ejercicio_8 <- choose(4, 3) / (2^4)
   
   # Ejercicio 9
   # Tu código aquí
