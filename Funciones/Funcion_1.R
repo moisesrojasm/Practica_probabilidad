@@ -2,60 +2,75 @@
 
 resolver_ejercicios_1_al_12 <- function() {
   
-  # Inicializar una lista para guardar las respuestas de este bloque
   respuestas <- list()
   
-  # --- Ejercicio 1: Moneda y dado ---
+  # Ejercicio 1
   opciones_moneda <- c("Cara", "Cruz")
   opciones_dado <- 1:6
   
   S_ej1 <- expand.grid(opciones_moneda, opciones_dado)
   
-  cardinalidad <- nrow(S_ej1)
+  cardinalidad_ej1 <- nrow(S_ej1)
   
-  evento <- subset(S_ej1, opciones_moneda == "Cara", opciones_dado = c(2,4,6))
+  evento_ej1 <- subset(S_ej1, opciones_moneda == "Cara", opciones_dado = c(2,4,6))
   
-  casos_favorables <- nrow(evento)
+  casos_favorables_ej1 <- nrow(evento_ej1)
   
-  prob_ej1 <- casos_favorables / cardinalidad
+  prob_ej1 <- casos_favorables_ej1 / cardinalidad_ej1
   
   respuestas$ej1 <- list(
     Espacio_Muestral = S_ej1,
     Probabilidad = prob_ej1
   )
   
-  # --- Ejercicio 2: Suma de 3 dados ---
-  # TODO: Tu código aquí
+  # Ejercicio 2
+  caras_dado <- 1:6
+  S_ej2 <- expand.grid(Dado1 = caras_dado, Dado2 = caras_dado, Dado3 = caras_dado)
   
-  # --- Ejercicio 3: Esferas con reemplazo ---
-  # TODO: Tu código aquí
+  # Suma de los 3 dados para cada escenario del S
+  S_ej2$Suma_Total <- rowSums(S_ej2)
   
-  # --- Ejercicio 4: Carta de baraja ---
-  # TODO: Tu código aquí
+  cardinalidad_ej2 <- nrow(S_ej2)
   
-  # --- Ejercicio 5: Medallas de atletismo ---
-  # TODO: Tu código aquí
+  evento_ej2 <- subset(S_ej2, Suma_Total == 10)
+  casos_favorables_ej2 <- nrow(evento_ej2)
+  prob_ej2 <- casos_favorables_ej2 / cardinalidad_ej2
   
-  # --- Ejercicio 6: Analistas de proyecto ---
-  # TODO: Tu código aquí
+  respuestas$ej2 <- list(
+    Espacio_Muestral = S_ej2,
+    Casos_Favorables = casos_favorables_ej2,
+    Probabilidad = prob_ej2
+  )
   
-  # --- Ejercicio 7: Canicas de colores ---
-  # TODO: Tu código aquí
+  # Ejercicio 3
+  # Tu código aquí
   
-  # --- Ejercicio 8: Moneda 4 veces (3 cruces) ---
-  # TODO: Tu código aquí
+  # Ejercicio 4
+  # Tu código aquí
   
-  # --- Ejercicio 9: Dos dados (suma 7 dado un 4) ---
-  # TODO: Tu código aquí
+  # Ejercicio 5
+  # Tu código aquí
   
-  # --- Ejercicio 10: Baraja (Espadas dado que es figura) ---
-  # TODO: Tu código aquí
+  # Ejercicio 6
+  # Tu código aquí
   
-  # --- Ejercicio 11: Teléfonos sin reemplazo ---
-  # TODO: Tu código aquí
+  # Ejercicio 7
+  # Tu código aquí
   
-  # --- Ejercicio 12: Teorema de Bayes (Proveedor C) ---
-  # TODO: Tu código aquí
+  # Ejercicio 8
+  # Tu código aquí
+  
+  # Ejercicio 9
+  # Tu código aquí
+  
+  # Ejercicio 10
+  # Tu código aquí
+  
+  # Ejercicio 11
+  # Tu código aquí
+  
+  # Ejercicio 12
+  # Tu código aquí
   
   return(respuestas)
 }
