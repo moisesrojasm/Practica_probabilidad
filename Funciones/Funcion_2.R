@@ -8,27 +8,192 @@ resolver_ejercicios_1_al_18 <- function() {
   respuestas <- list()
   
   # Ejercicio 13
-  # TODO: Generar simulación de 5000 veces
-  # TODO: Construir el Data Frame tbl1.Sim comparando frec relativa vs teórica (1/6)
-  respuestas$tbl1.Sim <- data.frame(
-    # Reemplaza esto con tus vectores reales
-    Evento = c("Corazon", "Pica", "Trebol", "Diamante"),
-    Frec_Empirica = c(0, 0, 0, 0),
-    Prob_Teorica = rep(1/4, 4) # Nota: Verifica el 1/6 de la instrucción del profe, parece un error tipográfico de él si son palos de baraja (son 4 palos).
+  
+  # Simulación de 5 000 extracciones de un mazo de 52 cartas
+  # (con reemplazo). Probabilidad empírica de obtener Corazones.
+  
+  palos  <- c("Corazones", "Diamantes", "Picas", "Treboles")
+  n_sim  <- 5000
+  
+  muestra_palos <- sample(palos, size = n_sim, replace = TRUE)
+  
+  # ── tbl1.Sim: frecuencia relativa empírica vs probabilidad teórica ──
+  freq <- table(muestra_palos)
+  
+  tbl1.Sim <- data.frame(
+    Palo          = names(freq),
+    Frecuencia    = as.numeric(freq),
+    Frec_Relativa = as.numeric(freq) / n_sim,
+    Prob_Teorica  = 1 / 4            # P(palo) = 13/52 = 0.25
   )
+  
+  cat("\n")
+  cat(" tbl1.Sim | Ejercicio 13\n")
+  cat("\n")
+  print(tbl1.Sim)
+  
+  p_corazones_emp <- tbl1.Sim$Frec_Relativa[tbl1.Sim$Palo == "Corazones"]
+  cat(sprintf("\nP(Corazones) empírica = %.4f\n", p_corazones_emp))
+  cat(sprintf("P(Corazones) teórica  = %.4f\n\n", 1 / 4))
+  
+  # ─ Gráfica 13: barras de frecuencia relativa por palo ─
+  graf_ej13 <- ggplot(tbl1.Sim, aes(x = Palo, y = Frec_Relativa, fill = Palo)) +
+    geom_col(color = "black", width = 0.6) +
+    geom_hline(yintercept = 0.25, color = "red",
+               linewidth = 1, linetype = "dashed") +
+    annotate("text", x = 0.6, y = 0.265,
+             label = "Prob. teórica = 0.25",
+             color = "red", size = 3.5, hjust = 0) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_y_continuous(limits = c(0, 0.32)) +
+    labs(
+      title    = "Ejercicio 13 — Frecuencia Relativa por Palo (n = 5 000)",
+      subtitle = "Distribución uniforme discreta · Extracción con reemplazo",
+      x        = "Palo",
+      y        = "Frecuencia Relativa",
+      fill     = "Palo"
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+  
+  print(graf_ej13)
+  
+  write.csv(tbl1.Sim, "Resultados/Data.frames/tbl1.Sim.csv", row.names = FALSE)
+  ggsave("Resultados/Graficas/graf_ej13.png", plot = graf_ej13, width = 7, height = 5)
   
   # Ejercicio 14
-  # TODO: Calcular probabilidad exacta y simular 10,000 exámenes
-  # TODO: Construir Data Frame tbl2.Disc (Dominio, dbinom, pbinom)
-  respuestas$tbl2.Disc <- data.frame(
-    # Rellenar con los cálculos correctos
-    x = 0:15,
-    Prob_Exacta = rep(0, 16),
-    Prob_Acumulada = rep(0, 16)
+  
+  # Test de 15 preguntas, 4 opciones por pregunta (p = 1/4).
+  # P(acertar exactamente 5). Simulación de 10 000 exámenes.
+  
+  n14 <- 15
+  p14 <- 1 / 4
+  
+  # ─ Probabilidad exacta ─
+  prob_binom_5 <- dbinom(5, size = n14, prob = p14)
+  
+  cat("\n")
+  cat(" Ejercicio 14 | Distribución Binomial\n")
+  cat("\n")
+  cat(sprintf("P(X = 5) exacta    = %.6f\n", prob_binom_5))
+  
+  # ─ Simulación 10 000 exámenes ─
+  sim_examenes <- rbinom(10000, size = n14, prob = p14)
+  prob_emp_14  <- mean(sim_examenes == 5)
+  cat(sprintf("P(X = 5) empírica  = %.6f  (10 000 simulaciones)\n\n", prob_emp_14))
+  
+  # ─ tbl2.Disc: dominio completo X = 0 … 15 ─
+  x_binom <- 0:n14
+  
+  tbl2.Disc <- data.frame(
+    x           = x_binom,
+    P_exacta    = round(dbinom(x_binom, size = n14, prob = p14), 6),
+    P_acumulada = round(pbinom(x_binom, size = n14, prob = p14), 6)
   )
   
+  cat("\n")
+  cat(" tbl2.Disc | Binomial(n = 15, p = 0.25)\n")
+  cat("\n")
+  print(tbl2.Disc)
+  
+  # ─ Gráfica 14a: función de masa (barras) ─
+  graf_ej14_masa <- ggplot(tbl2.Disc, aes(x = x, y = P_exacta,
+                                          fill = (x == 5))) +
+    geom_col(color = "black", width = 0.7) +
+    scale_fill_manual(values  = c("TRUE"  = "#E74C3C",
+                                  "FALSE" = "steelblue"),
+                      labels  = c("TRUE"  = "X = 5",
+                                  "FALSE" = "Otros"),
+                      name    = "") +
+    scale_x_continuous(breaks = 0:n14) +
+    labs(
+      title    = "Ejercicio 14 — Función de Masa Binomial",
+      subtitle = "n = 15, p = 0.25  |  Rojo: P(X = 5)",
+      x        = "Número de aciertos (X)",
+      y        = "P(X = x)"
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+  
+  print(graf_ej14_masa)
+  
+  # ─ Gráfica 14b: ojiva acumulada ─
+  graf_ej14_ojiva <- ggplot(tbl2.Disc, aes(x = x, y = P_acumulada)) +
+    geom_step(color = "steelblue", linewidth = 1.2) +
+    geom_point(color = "steelblue", size = 2.5) +
+    scale_x_continuous(breaks = 0:n14) +
+    scale_y_continuous(limits = c(0, 1)) +
+    labs(
+      title    = "Ejercicio 14 — Ojiva de Probabilidad Acumulada | Binomial",
+      subtitle = "n = 15, p = 0.25",
+      x        = "Número de aciertos (X)",
+      y        = "P(X \u2264 x)"
+    ) +
+    theme_minimal(base_size = 13)
+  
+  print(graf_ej14_ojiva)
+  
+  write.csv(tbl2.Disc, "Resultados/Data.frames/tbl2.Disc.csv", row.names = FALSE)
+  ggsave("Resultados/Graficas/graf_ej14_masa.png", plot = graf_ej14_masa, width = 7, height = 5)
+  ggsave("Resultados/Graficas/graf_ej14_ojiva.png", plot = graf_ej14_ojiva, width = 7, height = 5)
+  
   # Ejercicio 15
-  # TODO: Tu código aquí
+  
+  # Servidor web: λ = 12 solicitudes/segundo.
+  # P(exactamente 10 solicitudes). Simulación de 5 000 segundos.
+  
+  lambda15 <- 12
+  
+  # ─ Probabilidad exacta ─
+  prob_pois_10 <- dpois(10, lambda = lambda15)
+  
+  cat("\n")
+  cat(" Ejercicio 15 | Distribución de Poisson\n")
+  cat("\n")
+  cat(sprintf("P(X = 10) exacta    = %.6f\n", prob_pois_10))
+  
+  # ─ Simulación 5 000 escenarios ─
+  sim_pois    <- rpois(5000, lambda = lambda15)
+  prob_emp_15 <- mean(sim_pois == 10)
+  cat(sprintf("P(X = 10) empírica  = %.6f  (5 000 simulaciones)\n", prob_emp_15))
+  
+  # ─ Probabilidad P(X > 7) ─
+  p_mayor7 <- ppois(7, lambda = lambda15, lower.tail = FALSE)
+  cat(sprintf("P(X > 7)  exacta    = %.6f\n\n", p_mayor7))
+  
+  # ─ Data Frame para la gráfica (dominio 0 – 25) -
+  x_pois     <- 0:25
+  
+  df_poisson <- data.frame(
+    x      = x_pois,
+    prob   = dpois(x_pois, lambda = lambda15),
+    region = ifelse(x_pois > 7, "P(X > 7)", "P(X \u2264 7)")
+  )
+  
+  # ─ Gráfica 15: gráfico de masas con región resaltada ─
+  graf_ej15 <- ggplot(df_poisson, aes(x = x, y = prob, fill = region)) +
+    geom_col(color = "black", width = 0.7) +
+    scale_fill_manual(
+      values = c("P(X > 7)"  = "#E74C3C",
+                 "P(X \u2264 7)" = "#3498DB"),
+      name   = "Región"
+    ) +
+    scale_x_continuous(breaks = seq(0, 25, 2)) +
+    labs(
+      title    = "Ejercicio 15 — Función de Masa de Poisson",
+      subtitle = paste0("\u03bb = ", lambda15,
+                        " solicitudes/seg  |  Rojo: P(X > 7) = ",
+                        round(p_mayor7, 4)),
+      x        = "Número de solicitudes (X)",
+      y        = "P(X = x)"
+    ) +
+    theme_minimal(base_size = 13) +
+    theme(legend.position = "top")
+  
+  print(graf_ej15)
+  
+  write.csv(df_poisson, "Resultados/Data.frames/tbl_poisson.csv", row.names = FALSE)
+  ggsave("Resultados/Graficas/graf_ej15.png", plot = graf_ej15, width = 7, height = 5)
   
   # Ejercicio 16
   
