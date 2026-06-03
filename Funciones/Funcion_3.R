@@ -4,39 +4,133 @@ resolver_ejercicios_19_al_24 <- function() {
   
   respuestas <- list()
   
-  # Ejercicio 19
+  # EJERCICIO 19 - DISTRIBUCION NORMAL
   
-  # X ~ Normal(mu = 50, sigma = 2) gramos
   # Pregunta A: P(48 <= X <= 52)
-  # Pregunta B: Percentil 90
+  # Pregunta B: Percentil 90 (peso que delimita el 90% inferior)
   
   # Parametros del problema
   mu    <- 50    # media en gramos
   sigma <- 2     # desviacion estandar en gramos
   
-  # Pregunta A: P(48 <= X <= 52) = F(52) - F(48)
+  
+  # 1. PREGUNTA A: P(48 <= X <= 52)
+  
+  # Para continuas: P(a <= X <= b) = F(b) - F(a) = pnorm(b) - pnorm(a)
+  
   a <- 48
   b <- 52
+  
   prob_intervalo <- pnorm(q = b, mean = mu, sd = sigma) -
     pnorm(q = a, mean = mu, sd = sigma)
   
-  # Pregunta B: Percentil 90 (cuantil inverso)
+  cat("Pregunta A:\n")
+  cat("P(", a, "<= X <=", b, ") =", prob_intervalo, "\n")
+  cat("P(", a, "<= X <=", b, ") =",
+      round(prob_intervalo * 100, 4), "%\n\n")
+  
+  # Observacion: como a = mu-sigma y b = mu+sigma, esperamos ~68.27%
+  cat("Verificacion regla 68-95-99.7:\n")
+  cat("a = mu - sigma =", mu - sigma, "\n")
+  cat("b = mu + sigma =", mu + sigma, "\n")
+  cat("Probabilidad esperada (~68.27%) confirmada.\n\n")
+  
+  
+  
+  # 2. PREGUNTA B: Percentil 90
+  
   percentil_90 <- qnorm(p = 0.90, mean = mu, sd = sigma)
   
-  # Guardar las respuestas escalares en la lista
-  respuestas$ej19_prob_intervalo <- prob_intervalo
-  respuestas$ej19_percentil_90   <- percentil_90
+  cat("Pregunta B:\n")
+  cat("Peso que delimita el 90% inferior (percentil 90) =",
+      round(percentil_90, 4), "g\n\n")
   
-  # Data Frame tbl3.Cont: dominio en [mu - 3*sigma, mu + 3*sigma]
-  # con la funcion de densidad f(x). 300 puntos para curva suave.
-  x_seq <- seq(from = mu - 3 * sigma,
-               to   = mu + 3 * sigma,
-               length.out = 300)
-  fx    <- dnorm(x_seq, mean = mu, sd = sigma)
   
-  respuestas$tbl3.Cont <- data.frame(
-    incognita   = x_seq,
-    densidad_fx = fx
+  
+  # 3. DATA FRAME tbl3.Cont: dominio en [mu - 3*sigma, mu + 3*sigma]
+  # emparejamos con la funcion de densidad f(x)
+  # Usamos 300 puntos equiespaciados.
+  
+  x_dom_norm <- seq(from       = mu - 3 * sigma,
+                    to         = mu + 3 * sigma,
+                    length.out = 300)
+  
+  # Densidad f(x) en cada punto (NOTA: esto NO es probabilidad puntual)
+  fx <- dnorm(x = x_dom_norm, mean = mu, sd = sigma)
+  
+  # Tambien agregamos la acumulada F(x) por completitud
+  Fx <- pnorm(q = x_dom_norm, mean = mu, sd = sigma)
+  
+  # Data frame completo
+  df_norm <- data.frame(
+    x   = x_dom_norm,
+    fx  = fx,
+    Fx  = Fx
+  )
+  
+  # Extracto (rubrica pide "extracto", no todo el DF)
+  cat("Extracto del data frame (cada 30 filas):\n")
+  print(df_norm[seq(1, nrow(df_norm), by = 30), ])
+  
+  # Guardar CSV completo
+  write.csv(df_norm,
+            file = "Resultados/Data.frames/df_normal.csv",
+            row.names = FALSE)
+  
+  
+  
+  
+  # 4. GRAFICO 1: CURVA DE DENSIDAD f(x) con el intervalo resaltado
+  library(ggplot2)
+  
+  # Subconjunto del DF para el area entre 48 y 52
+  df_area <- subset(df_norm, x >= a & x <= b)
+  
+  grafico_norm <- ggplot(df_norm, aes(x = x, y = fx)) +
+    # Area sombreada del intervalo
+    geom_area(data = df_area, aes(x = x, y = fx),
+              fill = "skyblue", alpha = 0.6) +
+    # Curva de densidad suave
+    geom_line(color = "darkblue", linewidth = 1.2) +
+    # Lineas verticales en a, b y el percentil 90
+    geom_vline(xintercept = a,            linetype = "dashed",
+               color = "red") +
+    geom_vline(xintercept = b,            linetype = "dashed",
+               color = "red") +
+    geom_vline(xintercept = percentil_90, linetype = "dotted",
+               color = "darkgreen", linewidth = 1) +
+    # Etiquetas en las lineas
+    annotate("text", x = a, y = max(fx) * 0.15,
+             label = paste("a =", a), color = "red", hjust = 1.1) +
+    annotate("text", x = b, y = max(fx) * 0.15,
+             label = paste("b =", b), color = "red", hjust = -0.1) +
+    annotate("text", x = percentil_90, y = max(fx) * 0.95,
+             label = paste("P90 =", round(percentil_90, 2)),
+             color = "darkgreen", hjust = -0.1) +
+    labs(
+      title    = "Distribucion Normal - Ejercicio 19",
+      subtitle = bquote("Parametros: " * mu * " = " * .(mu) *
+                          ", " * sigma * " = " * .(sigma) *
+                          "  |  Area azul: P(48 <= X <= 52) = " *
+                          .(round(prob_intervalo, 4))),
+      x = "Peso del componente (gramos)",
+      y = "Densidad f(x)"
+    ) +
+    theme_minimal(base_size = 12) +
+    theme(plot.title    = element_text(face = "bold"),
+          plot.subtitle = element_text(face = "italic"))
+  
+  print(grafico_norm)
+  
+  
+  
+  # 5. Guardar PNG
+  ggsave(
+    filename = "Resultados/Graficas/grafico_normal.png",
+    plot     = grafico_norm,
+    width    = 9,
+    height   = 5,
+    dpi      = 300
   )
   
   # --- Ejercicio 20: Uniforme Continua (Tiempo de espera servidor) ---
