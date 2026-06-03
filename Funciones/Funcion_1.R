@@ -111,17 +111,26 @@ resolver_ejercicios_1_al_12 <- function() {
   # Ejercicio 8
   respuestas$ejercicio_8 <- choose(4, 3) / (2^4)
   
-  # Ejercicio 9
-  # Tu código aquí
-  
-  # Ejercicio 10
-  # Tu código aquí
+  # Ejercicio 9:
+  Omega <- rolldie(times = 2, makespace = TRUE)
+  prob_condicional_1 <- Prob(Omega, X1 == 4, given =  (X1 + X2 == 7))
+  print(prob_condicional_1)
+  # Ejercicio 10:
+  Delta <- probspace(cards())
+  prob_condicional_2 <- Prob(Delta, suit == "Spade", given = (rank %in% c("J", "Q", "K")))
+  print(prob_condicional_2)
   
   # Ejercicio 11
-  # Tu código aquí
+  defectuosos <- 5
+  total <- 20
+  prob_condicional <- (defectuosos - 1) / (total - 1)
+  print(prob_condicional)
   
   # Ejercicio 12
-  # Tu código aquí
+  defectuosos <- 5
+  total <- 20
+  prob_condicional <- (defectuosos - 1) / (total - 1)
+  print(prob_condicional)
   
   return(respuestas)
 }
