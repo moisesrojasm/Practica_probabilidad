@@ -113,8 +113,8 @@ resolver_ejercicios_1_al_12 <- function() {
   
   # Ejercicio 9:
   Omega <- rolldie(times = 2, makespace = TRUE)
-  prob_condicional_1 <- Prob(Omega, X1 == 4, given =  (X1 + X2 == 7))
-  print(prob_condicional_1)
+  prob_condicional <- Prob(Omega, X1 + X2 == 7, given = (X1 == 4 | X2 == 4))
+  print(prob_condicional)
   # Ejercicio 10:
   Delta <- probspace(cards())
   prob_condicional_2 <- Prob(Delta, suit == "Spade", given = (rank %in% c("J", "Q", "K")))
@@ -123,14 +123,15 @@ resolver_ejercicios_1_al_12 <- function() {
   # Ejercicio 11
   defectuosos <- 5
   total <- 20
-  prob_condicional <- (defectuosos - 1) / (total - 1)
-  print(prob_condicional)
+  prob_condicional_3 <- (defectuosos - 1) / (total - 1)
+  print(prob_condicional_3)
   
   # Ejercicio 12
-  defectuosos <- 5
-  total <- 20
-  prob_condicional <- (defectuosos - 1) / (total - 1)
-  print(prob_condicional)
+  prior <- c(0.50, 0.30, 0.20)
+  likelihood <- c(0.01, 0.02, 0.05)
+  evidencia_total <- sum(prior * likelihood)
+  posterior_C <- (prior[3] * likelihood[3]) / evidencia_total
+  print(posterior_C)
   
   return(respuestas)
 }
