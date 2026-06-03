@@ -4,8 +4,7 @@ cat("Iniciando entorno de trabajo...\n")
 library(ggplot2)
 library(probs)
 
-# Solo para cumplir con la rúbrica
-#datos_historicos <- read.csv("Data/Datos.txt")
+# datos_historicos <- read.csv("Data/Datos.txt")
 
 cat("Cargando funciones modulares...\n")
 source("Funciones/Funcion_1.R", encoding = "UTF-8")
