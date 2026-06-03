@@ -40,19 +40,19 @@ resolver_ejercicios_19_al_24 <- function() {
   )
   
   # --- Ejercicio 20: Uniforme Continua (Tiempo de espera servidor) ---
-  # TODO: Tu código aquí
+  # Tu código aquí
   
   # --- Ejercicio 21: Exponencial (Fallas sistema informático) ---
-  # TODO: Tu código aquí
+  # Tu código aquí
   
   # --- Ejercicio 22: Gamma (Compilar software) ---
-  # TODO: Tu código aquí
+  # Tu código aquí
   
   # --- Ejercicio 23: Weibull (Batería IoT) ---
-  # TODO: Tu código aquí
+  # Tu código aquí
   
   # --- Ejercicio 24: Log-Normal (Tráfico de red) ---
-  # TODO: Tu código aquí
+  # Tu código aquí
   
   
   return(respuestas)
