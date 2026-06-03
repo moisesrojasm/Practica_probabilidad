@@ -1,6 +1,6 @@
 # Modelado Estocástico y Análisis de Distribuciones
 
-## 📖 Descripción del Proyecto
+## Descripción del Proyecto
 
 Este repositorio contiene el código fuente, los datos y los resultados de nuestra práctica final de la materia de Probabilidad. El proyecto aborda la resolución algorítmica de 24 ejercicios probabilísticos, abarcando desde espacios muestrales clásicos y el Teorema de Bayes, hasta el modelado de variables aleatorias mediante distribuciones discretas y continuas. 
 
