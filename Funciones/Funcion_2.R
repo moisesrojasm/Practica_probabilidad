@@ -1,8 +1,7 @@
 # Ejercicios del 13 al 18
 
-resolver_ejercicios_1_al_18 <- function() {
+resolver_ejercicios_13_al_18 <- function() {
   
-  # Fijar semilla para que las simulaciones den el mismo resultado siempre
   set.seed(123) 
   
   respuestas <- list()
@@ -17,7 +16,7 @@ resolver_ejercicios_1_al_18 <- function() {
   
   muestra_palos <- sample(palos, size = n_sim, replace = TRUE)
   
-  # ── tbl1.Sim: frecuencia relativa empírica vs probabilidad teórica ──
+  # ── tbl1.Sim
   freq <- table(muestra_palos)
   
   tbl1.Sim <- data.frame(
@@ -36,7 +35,7 @@ resolver_ejercicios_1_al_18 <- function() {
   cat(sprintf("\nP(Corazones) empírica = %.4f\n", p_corazones_emp))
   cat(sprintf("P(Corazones) teórica  = %.4f\n\n", 1 / 4))
   
-  # ─ Gráfica 13: barras de frecuencia relativa por palo ─
+  # Gráfica 13: barras de frecuencia relativa por palo 
   graf_ej13 <- ggplot(tbl1.Sim, aes(x = Palo, y = Frec_Relativa, fill = Palo)) +
     geom_col(color = "black", width = 0.6) +
     geom_hline(yintercept = 0.25, color = "red",
@@ -69,7 +68,6 @@ resolver_ejercicios_1_al_18 <- function() {
   n14 <- 15
   p14 <- 1 / 4
   
-  # ─ Probabilidad exacta ─
   prob_binom_5 <- dbinom(5, size = n14, prob = p14)
   
   cat("\n")
@@ -77,12 +75,12 @@ resolver_ejercicios_1_al_18 <- function() {
   cat("\n")
   cat(sprintf("P(X = 5) exacta    = %.6f\n", prob_binom_5))
   
-  # ─ Simulación 10 000 exámenes ─
+  # Simulación 10 000 exámenes
   sim_examenes <- rbinom(10000, size = n14, prob = p14)
   prob_emp_14  <- mean(sim_examenes == 5)
   cat(sprintf("P(X = 5) empírica  = %.6f  (10 000 simulaciones)\n\n", prob_emp_14))
   
-  # ─ tbl2.Disc: dominio completo X = 0 … 15 ─
+  # tbl2.Disc: dominio completo X = 0 … 15
   x_binom <- 0:n14
   
   tbl2.Disc <- data.frame(
@@ -96,7 +94,7 @@ resolver_ejercicios_1_al_18 <- function() {
   cat("\n")
   print(tbl2.Disc)
   
-  # ─ Gráfica 14a: función de masa (barras) ─
+  # Gráfica 14a: función de masa (barras)
   graf_ej14_masa <- ggplot(tbl2.Disc, aes(x = x, y = P_exacta,
                                           fill = (x == 5))) +
     geom_col(color = "black", width = 0.7) +
@@ -117,7 +115,7 @@ resolver_ejercicios_1_al_18 <- function() {
   
   print(graf_ej14_masa)
   
-  # ─ Gráfica 14b: ojiva acumulada ─
+  # Gráfica 14b: ojiva acumulada
   graf_ej14_ojiva <- ggplot(tbl2.Disc, aes(x = x, y = P_acumulada)) +
     geom_step(color = "steelblue", linewidth = 1.2) +
     geom_point(color = "steelblue", size = 2.5) +
@@ -144,7 +142,6 @@ resolver_ejercicios_1_al_18 <- function() {
   
   lambda15 <- 12
   
-  # ─ Probabilidad exacta ─
   prob_pois_10 <- dpois(10, lambda = lambda15)
   
   cat("\n")
@@ -152,16 +149,16 @@ resolver_ejercicios_1_al_18 <- function() {
   cat("\n")
   cat(sprintf("P(X = 10) exacta    = %.6f\n", prob_pois_10))
   
-  # ─ Simulación 5 000 escenarios ─
+  # Simulación 5 000 escenarios
   sim_pois    <- rpois(5000, lambda = lambda15)
   prob_emp_15 <- mean(sim_pois == 10)
   cat(sprintf("P(X = 10) empírica  = %.6f  (5 000 simulaciones)\n", prob_emp_15))
   
-  # ─ Probabilidad P(X > 7) ─
+  # Probabilidad P(X > 7)
   p_mayor7 <- ppois(7, lambda = lambda15, lower.tail = FALSE)
   cat(sprintf("P(X > 7)  exacta    = %.6f\n\n", p_mayor7))
   
-  # ─ Data Frame para la gráfica (dominio 0 – 25) -
+  # Data Frame para la gráfica (dominio 0 – 25)
   x_pois     <- 0:25
   
   df_poisson <- data.frame(
@@ -170,7 +167,7 @@ resolver_ejercicios_1_al_18 <- function() {
     region = ifelse(x_pois > 7, "P(X > 7)", "P(X \u2264 7)")
   )
   
-  # ─ Gráfica 15: gráfico de masas con región resaltada ─
+  # Gráfica 15: gráfico de masas con región resaltada
   graf_ej15 <- ggplot(df_poisson, aes(x = x, y = prob, fill = region)) +
     geom_col(color = "black", width = 0.7) +
     scale_fill_manual(
@@ -486,6 +483,9 @@ resolver_ejercicios_1_al_18 <- function() {
     dpi      = 300
   )
   
+  # Corrección
+  respuestas$tbl1.Sim <- tbl1.Sim
+  respuestas$tbl2.Disc <- tbl2.Disc
   
   return(respuestas)
 }
