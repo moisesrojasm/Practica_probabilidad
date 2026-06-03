@@ -22,7 +22,7 @@ Practica_probabilidad/
 
 El proyecto está organizado de manera estricta para garantizar la reproducibilidad y el orden de los resultados:
 
-* **Data/**: Almacena el archivo base `Datos.txt` requerido para la inicialización del sistema.
+* **Data/**: Almacena un archivo base `Datos.txt`. No es requerido para la inicialización del sistema.
 * **Funciones/**: Contiene los scripts analíticos (`Función_1.R`, `Función_2.R`, `Función_3.R`) con la resolución en código puro de los 24 ejercicios planteados.
 * **Resultados/Data.frames/**: Directorio de salida automatizado para las tablas de simulación y distribuciones discretas/continuas (`tbl1.Sim`, `tbl2.Disc`, `tbl3.Cont`).
 * **Resultados/Graficas/**: Directorio de salida automatizado para las visualizaciones científicas generadas (Ojivas, histogramas y curvas de densidad).
